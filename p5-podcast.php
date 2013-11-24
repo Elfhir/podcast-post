@@ -35,5 +35,56 @@
  * THE SOFTWARE.
 **/
 
+add_action( 'init', 'init_custom_post' );
+/**
+ * Create Custom Post Type as Post, Page ... When the Plugin is activating
+ * @todo  DOC
+ */
+function init_custom_post() {
 
+	register_post_type( 'p5-podcast-post',
+		array(
+			'labels' => array(
+				'name' => __( 'p5-podcast-posts' ),
+				'singular_name' => __( 'p5-podcast-post' )
+			),
+			'public' => true,
+			'has_archive' => true,
+			'show_ui' => true,
+			'rewrite' => array('slug' => 'p5-podcast-post'),
+			'capability_type' => 'post',
+			'hierarchical' => false,
+			'supports' => array('title',
+					'editor',
+					'author',
+					'thumbnail',
+					'excerpt',
+					'custom-fields'
+					)
+		)
+	);
+}
+
+
+add_action( 'template_redirect', 'init_custom_post_template' );
+/**
+ * Redirect for custom template in template subdirectory
+ * @todo  DOC
+ */
+function init_custom_post_template() {
+	
+	// Checks for single p5 podcast template
+	$template_path = dirname( __FILE__ ).'/template/single-p5-podcast-post.php';
+
+	if (file_exists($template_path)) {
+
+		// Page not Found ?
+		include( $template_path );
+        exit;
+	}
+}
+
+
+
+// EOF Never write after php closing tag
 ?>
