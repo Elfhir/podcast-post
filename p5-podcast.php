@@ -46,14 +46,15 @@ function init_custom_post() {
 		array(
 			'labels' => array(
 				'name' => __( 'p5-podcast-posts' ),
-				'singular_name' => __( 'p5-podcast-post' )
+				'singular_name' => __( 'p5-podcast-post' ),
+				 'menu_name' => __('Podcast')
 			),
 			'public' => true,
 			'has_archive' => true,
 			'show_ui' => true,
-			'rewrite' => array('slug' => 'p5-podcast-post'),
 			'capability_type' => 'post',
 			'hierarchical' => false,
+			'rewrite' => array('slug' => 'p5-podcast-post'),
 			'supports' => array('title',
 					'editor',
 					'author',
@@ -65,25 +66,40 @@ function init_custom_post() {
 	);
 }
 
-
-add_action( 'template_redirect', 'init_custom_post_template' );
+add_filter( 'single_template', 'include_custom_podcast_post' ) ;
 /**
  * Redirect for custom template in template subdirectory
  * @todo  DOC
  */
+function include_custom_podcast_post($single_template) {
+     global $post;
+ 
+     if ($post->post_type == 'p5-podcast-post') {
+          $single_template = plugin_dir_path( __FILE__ ) . 'template/single-p5-podcast-post.php';
+     }
+     return $single_template;
+}
+
+//add_action( 'template_redirect', 'init_custom_post_template' );
+/**
+ * Redirect for custom template in template subdirectory
+ * @todo  DOC
+ */
+/*
 function init_custom_post_template() {
 	
 	// Checks for single p5 podcast template
-	$template_path = dirname( __FILE__ ).'/template/single-p5-podcast-post.php';
+	$template_path = dirname( __FILE__ ).'/single-p5-podcast-post.php';
 
 	if (file_exists($template_path)) {
 
 		// Page not Found ?
-		include( $template_path );
-        exit;
+		//include( $template_path );
+       // exit;
+       get_template_part('loop');
 	}
 }
-
+*/
 
 
 // EOF Never write after php closing tag
