@@ -35,6 +35,8 @@
  * THE SOFTWARE.
 **/
 
+
+
 add_action( 'init', 'init_custom_post' );
 /**
  * Create Custom Post Type as Post, Page ... When the Plugin is activating
@@ -100,6 +102,43 @@ function init_custom_post_template() {
 	}
 }
 */
+
+add_action('admin_init', create_function('', 'add_meta_box("my_upload_field", "Upload File Data instead", "my_upload_field", "p5-podcast-post");'));
+/**
+ * @link  http://stackoverflow.com/questions/3249666/wordpress-3-0-custom-post-type-with-upload
+ * adding File Upload Field for Podcast Post - instead of Filling the fields
+ * We can upload a Datas.php for creating 1 (or more?) Podcast post
+ * 
+ * The current function add to the p5-podcast-post a field for uploading
+ */
+function my_upload_field( ) {
+    echo '<input type="file" name="my_upload_field" />';
+}
+
+add_action('wp_insert_post', 'handle_upload_field', 10, 2);
+/**
+ * @link  http://stackoverflow.com/questions/3249666/wordpress-3-0-custom-post-type-with-upload
+ * adding File Upload Field for Podcast Post - instead of Filling the fields
+ * We can upload a Datas.php for creating 1 (or more?) Podcast post
+ * 
+ * The current function upload the files to
+ */
+function handle_upload_field( $post_ID, $post) {
+
+    if (!empty($_FILES['my_upload_field']['name'])) {
+        $upload = wp_handle_upload($_FILES['my_upload_field']);
+        
+        if (!isset( $upload['error'] )) {
+            // no errors, do what you like
+        	if( $upload ) {
+        		echo "File is valid, and was successfully uploaded.\n";
+				var_dump( $upload );
+			} else {
+				echo "Possible file upload attack!\n";
+			}
+        }
+    }
+}
 
 
 // EOF Never write after php closing tag
