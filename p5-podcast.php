@@ -71,37 +71,24 @@ function init_custom_post() {
 add_filter( 'single_template', 'include_custom_podcast_post' ) ;
 /**
  * Redirect for custom template in template subdirectory
+ * Parse data/datas.php
  * @todo  DOC
  */
 function include_custom_podcast_post($single_template) {
-     global $post;
- 
-     if ($post->post_type == 'p5-podcast-post') {
-          $single_template = plugin_dir_path( __FILE__ ) . 'template/single-p5-podcast-post.php';
-     }
-     return $single_template;
-}
+	global $post;
 
-//add_action( 'template_redirect', 'init_custom_post_template' );
-/**
- * Redirect for custom template in template subdirectory
- * @todo  DOC
- */
-/*
-function init_custom_post_template() {
+	$file = include(plugin_dir_path( __FILE__ ) .'/data/datas.php');
 	
-	// Checks for single p5 podcast template
-	$template_path = dirname( __FILE__ ).'/single-p5-podcast-post.php';
+	// import data
+	$ep = unserialize( $data ) ;
+	var_dump($ep);
 
-	if (file_exists($template_path)) {
-
-		// Page not Found ?
-		//include( $template_path );
-       // exit;
-       get_template_part('loop');
+	if ($post->post_type == 'p5-podcast-post') {
+		$single_template = plugin_dir_path( __FILE__ ) . 'template/single-p5-podcast-post.php';
 	}
+	return $single_template;
 }
-*/
+
 
 add_action('admin_init', create_function('', 'add_meta_box("my_upload_field", "Upload File Data instead", "my_upload_field", "p5-podcast-post");'));
 /**
@@ -140,16 +127,6 @@ function handle_upload_field( $post_ID, $post) {
     }
 }
 
-add_action('save_post ', 'require_data_podcast');
-/**
- * Get array in plugin's data folder
- * 
- */
-function require_data_podcast () {
-	require_once('./data/datas.php');
-
-
-}
 
 // EOF Never write after php closing tag
 ?>

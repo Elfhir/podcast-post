@@ -1,7 +1,18 @@
-<?php $episodes = array (
-  
+<?php 
+/**
+ * NB : Previous datas.php was certainly exported with var_export($arg)
+ * When $arg is an object, it produced things like an array with stdClass::__set_state(array(something=>value, [...] )) in it
+ * stdClass is an internal class using by Php for converting object. Kind like Object class in Java or object in Python, but
+ * it has no methods ...
+ * Previously it causes me a Fatal Error : no __set_state in stdClass
+ * Lots of phpdoc and stackoverflow and co later, I kick off stdClass::__set_state ...
+ * 
+ * @link  http://php.net/manual/fr/function.var-export.php
+ */
+
+$episodes = array (
   1 => 
-  stdClass::__set_state(array(
+  array(
      'alias' => 'hasard-ou-creation',
      'state' => '1',
      'category' => 'Paroles de vie',
@@ -16,10 +27,10 @@
      'duree' => '15',
      'text' => '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus id eros pellentesque, malesuada vehicula dolor blandit. Curabitur congue ipsum.</p>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum condimentum mauris sed massa molestie, vel imperdiet lacus pretium. Proin iaculis erat.</p>',
-  )),
+  ),
   
   5 => 
-  stdClass::__set_state(array(
+  array(
      'alias' => 'la-brique-miampo',
      'state' => '1',
      'category' => 'Paroles de vie',
@@ -34,10 +45,10 @@
      'duree' => '15',
      'text' => '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus id eros pellentesque, malesuada vehicula dolor blandit. Curabitur congue ipsum.</p>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum condimentum mauris sed massa molestie, vel imperdiet lacus pretium. Proin iaculis erat.</p>',
-  )),
+  ),
   
   7 => 
-  stdClass::__set_state(array(
+  array(
      'alias' => 'ces-crises-inevitables',
      'state' => '1',
      'category' => 'Réflexion Faite',
@@ -52,10 +63,10 @@
      'duree' => '4',
      'text' => '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus id eros pellentesque, malesuada vehicula dolor blandit. Curabitur congue ipsum.</p>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum condimentum mauris sed massa molestie, vel imperdiet lacus pretium. Proin iaculis erat.</p>',
-  )),
+  ),
   
   12 => 
-  stdClass::__set_state(array(
+  array(
      'alias' => 'otage-prison-temoignage',
      'state' => '1',
      'category' => 'Paroles de vie',
@@ -70,10 +81,10 @@
      'duree' => '27',
      'text' => '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus id eros pellentesque, malesuada vehicula dolor blandit. Curabitur congue ipsum.</p>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum condimentum mauris sed massa molestie, vel imperdiet lacus pretium. Proin iaculis erat.</p>',
-  )),
+  ),
   
   14 => 
-  stdClass::__set_state(array(
+  array(
      'alias' => 'rosa-parks',
      'state' => '1',
      'category' => 'Réflexion Faite',
@@ -88,10 +99,10 @@
      'duree' => '16',
      'text' => '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus id eros pellentesque, malesuada vehicula dolor blandit. Curabitur congue ipsum.</p>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum condimentum mauris sed massa molestie, vel imperdiet lacus pretium. Proin iaculis erat.</p>',
-  )),
+  ),
   
   21 => 
-  stdClass::__set_state(array(
+  array(
      'alias' => 'comment-bien-viellir-13',
      'state' => '1',
      'category' => 'Paroles de vie',
@@ -106,5 +117,9 @@
      'duree' => '15',
      'text' => '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque molestie tellus id eros pellentesque, malesuada vehicula dolor blandit. Curabitur congue ipsum.</p>
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum condimentum mauris sed massa molestie, vel imperdiet lacus pretium. Proin iaculis erat.</p>',
-  )),
+  ),
 );
+
+$data = serialize($episodes);
+
+?>
