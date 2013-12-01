@@ -127,7 +127,7 @@ function handle_upload_field( $post_ID, $post) {
 
     if (!empty($_FILES['my_upload_field']['name'])) {
         $upload = wp_handle_upload($_FILES['my_upload_field']);
-        
+
         if (!isset( $upload['error'] )) {
             // no errors, do what you like
         	if( $upload ) {
@@ -140,6 +140,16 @@ function handle_upload_field( $post_ID, $post) {
     }
 }
 
+add_action('save_post ', 'require_data_podcast');
+/**
+ * Get array in plugin's data folder
+ * 
+ */
+function require_data_podcast () {
+	require_once('./data/datas.php');
+
+
+}
 
 // EOF Never write after php closing tag
 ?>
