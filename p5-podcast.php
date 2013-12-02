@@ -4,7 +4,7 @@
  * @version 0.1.0
  *
  *
- * Plugin Name: Platform5 Podcast
+ * Plugin Name: platform5-podcast
  * Plugin URI: http://www.jeremy-ta.fr/app/wp-plugins/platform5-podcast/
  * Description: WP plugin which import data from given values (array) into new WP posts - back-end test for Platform5
  * It requires the activation of Advanced Custom Fields plugin before.
@@ -67,40 +67,6 @@ function init_custom_post() {
 					)
 		)
 	);
-
-	// When the plugin is activating, insert 6 examples of post
-	$file = include(plugin_dir_path( __FILE__ ) .'/data/datas.php');
-
-	// import data
-	$ep = unserialize( $data ) ;
-
-	$post = array(
-		'post_date' => $ep[1]['pubdate'],
-		'post_excerpt' => $ep[1]['desc'],
-		'post_name' => $ep[1]['alias'],
-		'post_status' => $ep[1]['state'],
-		'post_title' => $ep[1]['h1'],
-		'post_content' => esc_attr($ep[1]['text']),
-		'post_type' => 'p5-podcast-post',
-		'tags_input' => explode(",", $ep[1]['tags']),
-	);
-	// Insert the post into the database
-	$post_id = wp_insert_post( $post );
-
-	add_post_meta($post_id, 'order', $ep[1]['order'], true);
-	add_post_meta($post_id, 'subtitle', $ep[1]['subtitle'], true);
-	add_post_meta($post_id, 'mp3', $ep[1]['mp3'], true);
-	add_post_meta($post_id, 'duration', $ep[1]['duration'], true);
-	
-	// Featured image => insert in Media Library from import
-	$image = wp_get_image_editor( $ep[1]['image'] );
-	if ( ! is_wp_error( $image ) ) {
-		$image->resize( 300, 300, true );
-		$image->save( 'new_image.jpg' );
-	}
-
-	// Category to set @TODO
-
 }
 
 
@@ -118,6 +84,61 @@ function include_custom_podcast_post($single_template) {
 	return $single_template;
 }
 
+register_activation_hook( __FILE__, 'import_data_podcast' );
+/**
+ * When the plugin is activating, create 6 exampls of post in database
+ * 
+ *  @todo  DOC
+ */
+function import_data_podcast( ) {
+	// When the plugin is activating, insert 6 examples of post
+	$file = include(plugin_dir_path( __FILE__ ) .'/data/datas.php');
+
+	// import data
+	$episodes = unserialize( $data ) ;
+
+	foreach ($episodes as $ep => $i) {
+
+		$post[$i] = array(
+			'post_author' => 'plugin',
+			'post_date' => $ep['pubdate'],
+			'post_excerpt' => $ep['desc'],
+			'post_name' => $ep['alias'],
+			'post_title' => $ep['h1'],
+			'post_content' => esc_attr($ep['text']),
+			'post_type' => 'p5-podcast-post',
+			'tags_input' => explode(",", $ep['tags']),
+			'post_status' => 'publish'
+		);
+
+		// publish or draft ?
+		/*
+		if($ep['state'] == 1 || $ep['state'] == '1') {
+			$post[$i]['post_status'] = 'publish';
+		}
+		else {
+			$post[$i]['post_status'] ='draft';
+		}
+		*/
+	
+		// Insert the post into the database
+		$post_id[$i] = wp_insert_post( $post[$i] );
+
+		add_post_meta($post_id[$i], 'order', $ep['order'], true);
+		add_post_meta($post_id[$i], 'subtitle', $ep['subtitle'], true);
+		add_post_meta($post_id[$i], 'mp3', $ep['mp3'], true);
+		add_post_meta($post_id[$i], 'duration', $ep['duration'], true);
+		
+		// Featured image => insert in Media Library from import
+		$image = wp_get_image_editor( $ep['image'] );
+		if ( ! is_wp_error( $image ) ) {
+			$image->resize( 300, 300, true );
+			$image->save( 'new_image.jpg' );
+		}
+	}
+
+	// Category to set @TODO
+}
 
 add_action('admin_init', create_function('', 'add_meta_box("my_upload_field", "Upload File Data instead", "my_upload_field", "p5-podcast-post");'));
 /**
