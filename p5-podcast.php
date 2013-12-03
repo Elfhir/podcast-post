@@ -117,7 +117,9 @@ function import_data_podcast( ) {
 			'post_type' => 'p5-podcast-post',
 			'tags_input' => explode(",", $ep[$i]['tags'])
 		);
-			
+		
+		wp_create_category($ep[$i]['category']);	
+
 		// Featured image => insert in Media Library from import
 		
 		//$image = wp_get_image_editor( $ep['image'] );
@@ -156,10 +158,12 @@ function import_data_podcast( ) {
 		// Insert the post into the database
 		$post_id = wp_insert_post( $post );
 
+		wp_create_category(utf8_encode($episodes[5]['category']));
+
 		add_post_meta($post_id, 'order', $episodes[5]['order'], true) || update_post_meta( $post_id, 'order', $episodes[5]['order'] );
 		add_post_meta($post_id, 'subtitle', $episodes[5]['h2'], true) || update_post_meta( $post_id, 'subtitle', $episodes[5]['h2'] );
 		add_post_meta($post_id, 'mp3', $episodes[5]['mp3'], true) || update_post_meta( $post_id, 'mp3', $episodes[5]['mp3'] );
-		add_post_meta($post_id, 'duration', $episodes[5]['duration'], true) || update_post_meta( $post_id, 'duration', $episodes[5]['duration'] );
+		add_post_meta($post_id, 'duree', $episodes[5]['duree'], true) || update_post_meta( $post_id, 'duree', $episodes[5]['duree'] );
 
 	// post 1
 	$post = array(
@@ -178,10 +182,12 @@ function import_data_podcast( ) {
 		// Insert the post into the database
 		$post_id = wp_insert_post( $post );
 
+		wp_create_category(utf8_encode($episodes[1]['category']));
+
 		add_post_meta($post_id, 'order', $episodes[1]['order'], true) || update_post_meta( $post_id, 'order', $episodes[1]['order'] );
 		add_post_meta($post_id, 'subtitle', $episodes[1]['h2'], true) || update_post_meta( $post_id, 'subtitle', $episodes[1]['h2'] );
 		add_post_meta($post_id, 'mp3', $episodes[1]['mp3'], true) || update_post_meta( $post_id, 'mp3', $episodes[1]['mp3'] );
-		add_post_meta($post_id, 'duration', $episodes[1]['duration'], true) || update_post_meta( $post_id, 'duration', $episodes[1]['duration'] );
+		add_post_meta($post_id, 'duree', $episodes[1]['duree'], true) || update_post_meta( $post_id, 'duree', $episodes[1]['duree'] );
 
 	// post 7
 	$post = array(
@@ -200,10 +206,12 @@ function import_data_podcast( ) {
 		// Insert the post into the database
 		$post_id = wp_insert_post( $post );
 
+		wp_create_category(utf8_encode($episodes[7]['category']));
+
 		add_post_meta($post_id, 'order', $episodes[7]['order'], true) || update_post_meta( $post_id, 'order', $episodes[7]['order'] );
 		add_post_meta($post_id, 'subtitle', $episodes[7]['h2'], true) || update_post_meta( $post_id, 'subtitle', $episodes[7]['h2'] );
 		add_post_meta($post_id, 'mp3', $episodes[7]['mp3'], true) || update_post_meta( $post_id, 'mp3', $episodes[7]['mp3'] );
-		add_post_meta($post_id, 'duration', $episodes[7]['duration'], true) || update_post_meta( $post_id, 'duration', $episodes[7]['duration'] );
+		add_post_meta($post_id, 'duree', $episodes[7]['duree'], true) || update_post_meta( $post_id, 'duree', $episodes[7]['duree'] );
 
 	// post 12
 	$post = array(
@@ -222,10 +230,12 @@ function import_data_podcast( ) {
 		// Insert the post into the database
 		$post_id = wp_insert_post( $post );
 
+		wp_create_category(utf8_encode($episodes[12]['category']));
+
 		add_post_meta($post_id, 'order', $episodes[12]['order'], true) || update_post_meta( $post_id, 'order', $episodes[12]['order'] );
 		add_post_meta($post_id, 'subtitle', $episodes[12]['h2'], true) || update_post_meta( $post_id, 'subtitle', $episodes[12]['h2'] );
 		add_post_meta($post_id, 'mp3', $episodes[12]['mp3'], true) || update_post_meta( $post_id, 'mp3', $episodes[12]['mp3'] );
-		add_post_meta($post_id, 'duration', $episodes[12]['duration'], true) || update_post_meta( $post_id, 'duration', $episodes[12]['duration'] );
+		add_post_meta($post_id, 'duree', $episodes[12]['duree'], true) || update_post_meta( $post_id, 'duree', $episodes[12]['duree'] );
 
 	// post 14
 	$post = array(
@@ -244,10 +254,12 @@ function import_data_podcast( ) {
 		// Insert the post into the database
 		$post_id = wp_insert_post( $post );
 
+		wp_create_category(utf8_encode($episodes[14]['category']));
+
 		add_post_meta($post_id, 'order', $episodes[14]['order'], true) || update_post_meta( $post_id, 'order', $episodes[14]['order'] );
 		add_post_meta($post_id, 'subtitle', $episodes[14]['h2'], true) || update_post_meta( $post_id, 'subtitle', $episodes[14]['h2'] );
 		add_post_meta($post_id, 'mp3', $episodes[14]['mp3'], true) || update_post_meta( $post_id, 'mp3', $episodes[14]['mp3'] );
-		add_post_meta($post_id, 'duration', $episodes[14]['duration'], true) || update_post_meta( $post_id, 'duration', $episodes[14]['duration'] );
+		add_post_meta($post_id, 'duree', $episodes[14]['duree'], true) || update_post_meta( $post_id, 'duree', $episodes[14]['duree'] );
 
 	// post 21
 	$post = array(
@@ -266,48 +278,15 @@ function import_data_podcast( ) {
 		// Insert the post into the database
 		$post_id = wp_insert_post( $post );
 
+		wp_create_category(utf8_encode($episodes[21]['category']));
+
 		add_post_meta($post_id, 'order', $episodes[21]['order'], true) || update_post_meta( $post_id, 'order', $episodes[21]['order'] );
 		add_post_meta($post_id, 'subtitle', $episodes[21]['h2'], true) || update_post_meta( $post_id, 'subtitle', $episodes[21]['h2'] );
 		add_post_meta($post_id, 'mp3', $episodes[21]['mp3'], true) || update_post_meta( $post_id, 'mp3', $episodes[21]['mp3'] );
-		add_post_meta($post_id, 'duration', $episodes[21]['duration'], true) || update_post_meta( $post_id, 'duration', $episodes[21]['duration'] );	
+		add_post_meta($post_id, 'duree', $episodes[21]['duree'], true) || update_post_meta( $post_id, 'duree', $episodes[21]['duree'] );	
 
 }
 
-add_action('admin_init', create_function('', 'add_meta_box("my_upload_field", "Upload File Data instead", "my_upload_field", "p5-podcast-post");'));
-/**
- * @link  http://stackoverflow.com/questions/3249666/wordpress-3-0-custom-post-type-with-upload
- * adding File Upload Field for Podcast Post - instead of Filling the fields
- * We can upload a Datas.php for creating 1 (or more?) Podcast post
- * 
- * The current function add to the p5-podcast-post a field for uploading
- */
-function my_upload_field( ) {
-    echo '<input type="file" name="my_upload_field" />';
-}
 
-add_action('wp_insert_post', 'handle_upload_field', 10, 2);
-/**
- * @link  http://stackoverflow.com/questions/3249666/wordpress-3-0-custom-post-type-with-upload
- * adding File Upload Field for Podcast Post - instead of Filling the fields
- * We can upload a Datas.php for creating 1 (or more?) Podcast post
- * 
- * The current function upload the files to
- */
-function handle_upload_field( $post_ID, $post) {
-
-    if (!empty($_FILES['my_upload_field']['name'])) {
-        $upload = wp_handle_upload($_FILES['my_upload_field']);
-
-        if (!isset( $upload['error'] )) {
-            // no errors, do what you like
-        	if( $upload ) {
-        		echo "File is valid, and was successfully uploaded.\n";
-				var_dump( $upload );
-			} else {
-				echo "Possible file upload attack!\n";
-			}
-        }
-    }
-}
 // EOF Never write after php closing tag
 ?>
