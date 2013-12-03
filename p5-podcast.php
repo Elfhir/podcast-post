@@ -39,9 +39,9 @@
 
 add_action( 'init', 'init_custom_post' );
 /**
- * Create Custom Post Type as Post, Page ... When the Plugin is activating
- * Parse data/datas.php
- * @todo  DOC
+ * Create Custom Post Type as Post, Page ...
+ * It will use custom-fields 
+ *
  */
 function init_custom_post() {
 
@@ -86,9 +86,9 @@ function include_custom_podcast_post($single_template) {
 
 register_activation_hook( __FILE__, 'import_data_podcast' );
 /**
- * When the plugin is activating, create 6 exampls of post in database
- * 
- *  @todo  DOC
+ * When the plugin is activating, create 6 examples of post in database
+ * There is no check if the file is there and it should be safely formated
+ *
  */
 function import_data_podcast( ) {
 	// When the plugin is activating, insert 6 examples of post
@@ -115,19 +115,14 @@ function import_data_podcast( ) {
 			'post_title' => $ep[$i]['h1'],
 			'post_content' => $ep[$i]['text'],
 			'post_type' => 'p5-podcast-post',
-			'tags_input' => explode(",", $ep[$i]['tags'])
+			'tags_input' => utf8_encode(explode(",", $ep[$i]['tags']))
 		);
 		
-		wp_create_category($ep[$i]['category']);	
+		$post_id[$i] = wp_create_category($ep[$i]['category']);	
 
 		// Featured image => insert in Media Library from import
-		
-		//$image = wp_get_image_editor( $ep['image'] );
-		//if ( ! is_wp_error( $image ) ) {
-		//	$image->resize( 300, 300, true );
-		//	$image->save( 'new_image.jpg' );
-		//}
-	
+		$image = media_sideload_image($ep[$i]['image'], $post_id, $desc);
+			
 		$i++;
 	}
 
@@ -142,6 +137,7 @@ function import_data_podcast( ) {
 	// I know the number ... ugly, but it works. I didn't find the
 
 	// post 5
+	// utf8_encode can be good for all fields. A special function for cleaning would be better.
 	$post = array(
 			'post_author' => '1',
 			'post_status' => $episodes[5]['state'],
@@ -151,15 +147,20 @@ function import_data_podcast( ) {
 			'post_title' => utf8_encode($episodes[5]['h1']),
 			'post_content' => $episodes[5]['text'],
 			'post_type' => 'p5-podcast-post',
-			'tags_input' => explode(",", $episodes[5]['tags']),
+			'tags_input' => utf8_encode(explode(",", $episodes[5]['tags'])),
 			'comment_status' => 'closed',
 			'ping_status' => 'closed',
 		);
 		// Insert the post into the database
 		$post_id = wp_insert_post( $post );
 
+		// Featured image => insert in Media Library, with a right url. Image is attach to the post.
+		$image = media_sideload_image($episodes[5]['image'], $post_id, 'image');
+
+		// Create a category
 		wp_create_category(utf8_encode($episodes[5]['category']));
 
+		// Add the custom fields
 		add_post_meta($post_id, 'order', $episodes[5]['order'], true) || update_post_meta( $post_id, 'order', $episodes[5]['order'] );
 		add_post_meta($post_id, 'subtitle', $episodes[5]['h2'], true) || update_post_meta( $post_id, 'subtitle', $episodes[5]['h2'] );
 		add_post_meta($post_id, 'mp3', $episodes[5]['mp3'], true) || update_post_meta( $post_id, 'mp3', $episodes[5]['mp3'] );
@@ -175,7 +176,7 @@ function import_data_podcast( ) {
 			'post_title' => utf8_encode($episodes[1]['h1']),
 			'post_content' => $episodes[1]['text'],
 			'post_type' => 'p5-podcast-post',
-			'tags_input' => explode(",", $episodes[1]['tags']),
+			'tags_input' => utf8_encode(explode(",", $episodes[1]['tags'])),
 			'comment_status' => 'closed',
 			'ping_status' => 'closed',
 		);
@@ -183,6 +184,8 @@ function import_data_podcast( ) {
 		$post_id = wp_insert_post( $post );
 
 		wp_create_category(utf8_encode($episodes[1]['category']));
+
+		$image = media_sideload_image($episodes[1]['image'], $post_id, 'image');
 
 		add_post_meta($post_id, 'order', $episodes[1]['order'], true) || update_post_meta( $post_id, 'order', $episodes[1]['order'] );
 		add_post_meta($post_id, 'subtitle', $episodes[1]['h2'], true) || update_post_meta( $post_id, 'subtitle', $episodes[1]['h2'] );
@@ -199,7 +202,7 @@ function import_data_podcast( ) {
 			'post_title' => utf8_encode($episodes[7]['h1']),
 			'post_content' => $episodes[7]['text'],
 			'post_type' => 'p5-podcast-post',
-			'tags_input' => explode(",", $episodes[7]['tags']),
+			'tags_input' => utf8_encode(explode(",", $episodes[7]['tags'])),
 			'comment_status' => 'closed',
 			'ping_status' => 'closed',
 		);
@@ -207,6 +210,8 @@ function import_data_podcast( ) {
 		$post_id = wp_insert_post( $post );
 
 		wp_create_category(utf8_encode($episodes[7]['category']));
+
+		$image = media_sideload_image($episodes[7]['image'], $post_id, 'image');
 
 		add_post_meta($post_id, 'order', $episodes[7]['order'], true) || update_post_meta( $post_id, 'order', $episodes[7]['order'] );
 		add_post_meta($post_id, 'subtitle', $episodes[7]['h2'], true) || update_post_meta( $post_id, 'subtitle', $episodes[7]['h2'] );
@@ -223,7 +228,7 @@ function import_data_podcast( ) {
 			'post_title' => utf8_encode($episodes[12]['h1']),
 			'post_content' => $episodes[12]['text'],
 			'post_type' => 'p5-podcast-post',
-			'tags_input' => explode(",", $episodes[12]['tags']),
+			'tags_input' => utf8_encode(explode(",", $episodes[12]['tags'])),
 			'comment_status' => 'closed',
 			'ping_status' => 'closed',
 		);
@@ -231,6 +236,8 @@ function import_data_podcast( ) {
 		$post_id = wp_insert_post( $post );
 
 		wp_create_category(utf8_encode($episodes[12]['category']));
+
+		$image = media_sideload_image($episodes[12]['image'], $post_id, 'image');
 
 		add_post_meta($post_id, 'order', $episodes[12]['order'], true) || update_post_meta( $post_id, 'order', $episodes[12]['order'] );
 		add_post_meta($post_id, 'subtitle', $episodes[12]['h2'], true) || update_post_meta( $post_id, 'subtitle', $episodes[12]['h2'] );
@@ -247,7 +254,7 @@ function import_data_podcast( ) {
 			'post_title' => utf8_encode($episodes[14]['h1']),
 			'post_content' => $episodes[14]['text'],
 			'post_type' => 'p5-podcast-post',
-			'tags_input' => explode(",", $episodes[14]['tags']),
+			'tags_input' => utf8_encode(explode(",", $episodes[14]['tags'])),
 			'comment_status' => 'closed',
 			'ping_status' => 'closed',
 		);
@@ -255,6 +262,8 @@ function import_data_podcast( ) {
 		$post_id = wp_insert_post( $post );
 
 		wp_create_category(utf8_encode($episodes[14]['category']));
+
+		$image = media_sideload_image($episodes[14]['image'], $post_id, 'image');
 
 		add_post_meta($post_id, 'order', $episodes[14]['order'], true) || update_post_meta( $post_id, 'order', $episodes[14]['order'] );
 		add_post_meta($post_id, 'subtitle', $episodes[14]['h2'], true) || update_post_meta( $post_id, 'subtitle', $episodes[14]['h2'] );
@@ -271,7 +280,7 @@ function import_data_podcast( ) {
 			'post_title' => utf8_encode($episodes[21]['h1']),
 			'post_content' => $episodes[21]['text'],
 			'post_type' => 'p5-podcast-post',
-			'tags_input' => explode(",", $episodes[21]['tags']),
+			'tags_input' => utf8_encode(explode(",", $episodes[21]['tags'])),
 			'comment_status' => 'closed',
 			'ping_status' => 'closed',
 		);
@@ -279,6 +288,8 @@ function import_data_podcast( ) {
 		$post_id = wp_insert_post( $post );
 
 		wp_create_category(utf8_encode($episodes[21]['category']));
+
+		$image = media_sideload_image($episodes[21]['image'], $post_id, 'image');
 
 		add_post_meta($post_id, 'order', $episodes[21]['order'], true) || update_post_meta( $post_id, 'order', $episodes[21]['order'] );
 		add_post_meta($post_id, 'subtitle', $episodes[21]['h2'], true) || update_post_meta( $post_id, 'subtitle', $episodes[21]['h2'] );
