@@ -7,14 +7,16 @@
  * Previously it causes me a Fatal Error : no __set_state in stdClass
  * Lots of phpdoc and stackoverflow and co later, I kick off stdClass::__set_state ...
  * 
+ * I have also changed 'state' => '1' to 'publish' because it's clearer.
+ * I have also changed  \' for ’ because I didn't succeed to manage it with str_replace or stripslashes, I don't know why.
+ * 
  * @link  http://php.net/manual/fr/function.var-export.php
  */
-
 $episodes = array (
   1 => 
   array(
      'alias' => 'hasard-ou-creation',
-     'state' => '1',
+     'state' => 'publish',
      'category' => 'Paroles de vie',
      'pubdate' => '2010-10-04 00:00:00',
      'order' => '111',
@@ -32,13 +34,13 @@ $episodes = array (
   5 => 
   array(
      'alias' => 'la-brique-miampo',
-     'state' => '1',
+     'state' => 'publish',
      'category' => 'Paroles de vie',
      'pubdate' => '2010-11-23 00:00:00',
      'order' => '103',
      'tags' => 'Humanitaire, Témoignage, Afrique',
      'desc' => '',
-     'h1' => 'Quand un Africain relève l\'Afrique...',
+     'h1' => 'Quand un Africain relève l Afrique...',
      'h2' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque pulvinar quis orci ac auctor. Praesent nec quam eu.',
      'image' => 'http://www.platform5.vn/resources/image1.jpg',
      'mp3' => 'here/themp3file6.mp3',
@@ -50,7 +52,7 @@ $episodes = array (
   7 => 
   array(
      'alias' => 'ces-crises-inevitables',
-     'state' => '1',
+     'state' => 'publish',
      'category' => 'Réflexion Faite',
      'pubdate' => '2010-11-24 11:48:18',
      'order' => '155',
@@ -68,7 +70,7 @@ $episodes = array (
   12 => 
   array(
      'alias' => 'otage-prison-temoignage',
-     'state' => '1',
+     'state' => 'publish',
      'category' => 'Paroles de vie',
      'pubdate' => '2011-01-28 00:00:00',
      'order' => '75',
@@ -86,7 +88,7 @@ $episodes = array (
   14 => 
   array(
      'alias' => 'rosa-parks',
-     'state' => '1',
+     'state' => 'publish',
      'category' => 'Réflexion Faite',
      'pubdate' => '2013-05-01 00:00:00',
      'order' => '16',
@@ -104,7 +106,7 @@ $episodes = array (
   21 => 
   array(
      'alias' => 'comment-bien-viellir-13',
-     'state' => '1',
+     'state' => 'publish',
      'category' => 'Paroles de vie',
      'pubdate' => '2010-12-08 15:23:28',
      'order' => '102',
@@ -119,7 +121,5 @@ $episodes = array (
         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum condimentum mauris sed massa molestie, vel imperdiet lacus pretium. Proin iaculis erat.</p>',
   ),
 );
-
 $data = serialize($episodes);
-
 ?>

@@ -97,47 +97,180 @@ function import_data_podcast( ) {
 	// import data
 	$episodes = unserialize( $data ) ;
 
-	foreach ($episodes as $ep => $i) {
+	// Insertion with a loop IS BETTER, but it doesn't succeed the way I do.
+	// It insert Draft posts ...
+	/*
+	$post_id = array();
+	$post = array();
+
+	$i = 0;
+	foreach ($episodes as $ep => $val) {
 
 		$post[$i] = array(
-			'post_author' => 'plugin',
-			'post_date' => $ep['pubdate'],
-			'post_excerpt' => $ep['desc'],
-			'post_name' => $ep['alias'],
-			'post_title' => $ep['h1'],
-			'post_content' => esc_attr($ep['text']),
+			'post_author' => 'Jérémy Ta',
+			'post_status' => $ep[$i]['state'],
+			'post_date' => $ep[$i]['pubdate'],
+			'post_excerpt' => $ep[$i]['desc'],
+			'post_name' => $ep[$i]['alias'],
+			'post_title' => $ep[$i]['h1'],
+			'post_content' => $ep[$i]['text'],
 			'post_type' => 'p5-podcast-post',
-			'tags_input' => explode(",", $ep['tags']),
-			'post_status' => 'publish'
+			'tags_input' => explode(",", $ep[$i]['tags'])
 		);
-
-		// publish or draft ?
-		/*
-		if($ep['state'] == 1 || $ep['state'] == '1') {
-			$post[$i]['post_status'] = 'publish';
-		}
-		else {
-			$post[$i]['post_status'] ='draft';
-		}
-		*/
-	
-		// Insert the post into the database
-		$post_id[$i] = wp_insert_post( $post[$i] );
-
-		add_post_meta($post_id[$i], 'order', $ep['order'], true);
-		add_post_meta($post_id[$i], 'subtitle', $ep['subtitle'], true);
-		add_post_meta($post_id[$i], 'mp3', $ep['mp3'], true);
-		add_post_meta($post_id[$i], 'duration', $ep['duration'], true);
-		
+			
 		// Featured image => insert in Media Library from import
-		$image = wp_get_image_editor( $ep['image'] );
-		if ( ! is_wp_error( $image ) ) {
-			$image->resize( 300, 300, true );
-			$image->save( 'new_image.jpg' );
-		}
+		
+		//$image = wp_get_image_editor( $ep['image'] );
+		//if ( ! is_wp_error( $image ) ) {
+		//	$image->resize( 300, 300, true );
+		//	$image->save( 'new_image.jpg' );
+		//}
+	
+		$i++;
 	}
 
-	// Category to set @TODO
+	for ($i = 0, $len = count($episodes); $i < $len; $i++) {
+		// Insert the post into the database
+		echo $post[$i];
+		$post_id[$i] = wp_insert_post( $post[$i] );
+	}
+	*/
+
+	// WARNING : because the previous loop doesn't work yet, I insert post one by one, because
+	// I know the number ... ugly, but it works. I didn't find the
+
+	// post 5
+	$post = array(
+			'post_author' => '1',
+			'post_status' => $episodes[5]['state'],
+			'post_date' => $episodes[5]['pubdate'],
+			'post_excerpt' => $episodes[5]['desc'],
+			'post_name' => $episodes[5]['alias'],
+			'post_title' => utf8_encode($episodes[5]['h1']),
+			'post_content' => $episodes[5]['text'],
+			'post_type' => 'p5-podcast-post',
+			'tags_input' => explode(",", $episodes[5]['tags']),
+			'comment_status' => 'closed',
+			'ping_status' => 'closed',
+		);
+		// Insert the post into the database
+		$post_id = wp_insert_post( $post );
+
+		add_post_meta($post_id, 'order', $episodes[5]['order'], true) || update_post_meta( $post_id, 'order', $episodes[5]['order'] );
+		add_post_meta($post_id, 'subtitle', $episodes[5]['h2'], true) || update_post_meta( $post_id, 'subtitle', $episodes[5]['h2'] );
+		add_post_meta($post_id, 'mp3', $episodes[5]['mp3'], true) || update_post_meta( $post_id, 'mp3', $episodes[5]['mp3'] );
+		add_post_meta($post_id, 'duration', $episodes[5]['duration'], true) || update_post_meta( $post_id, 'duration', $episodes[5]['duration'] );
+
+	// post 1
+	$post = array(
+			'post_author' => '1',
+			'post_status' => $episodes[1]['state'],
+			'post_date' => $episodes[1]['pubdate'],
+			'post_excerpt' => $episodes[1]['desc'],
+			'post_name' => $episodes[1]['alias'],
+			'post_title' => utf8_encode($episodes[1]['h1']),
+			'post_content' => $episodes[1]['text'],
+			'post_type' => 'p5-podcast-post',
+			'tags_input' => explode(",", $episodes[1]['tags']),
+			'comment_status' => 'closed',
+			'ping_status' => 'closed',
+		);
+		// Insert the post into the database
+		$post_id = wp_insert_post( $post );
+
+		add_post_meta($post_id, 'order', $episodes[1]['order'], true) || update_post_meta( $post_id, 'order', $episodes[1]['order'] );
+		add_post_meta($post_id, 'subtitle', $episodes[1]['h2'], true) || update_post_meta( $post_id, 'subtitle', $episodes[1]['h2'] );
+		add_post_meta($post_id, 'mp3', $episodes[1]['mp3'], true) || update_post_meta( $post_id, 'mp3', $episodes[1]['mp3'] );
+		add_post_meta($post_id, 'duration', $episodes[1]['duration'], true) || update_post_meta( $post_id, 'duration', $episodes[1]['duration'] );
+
+	// post 7
+	$post = array(
+			'post_author' => '1',
+			'post_status' => $episodes[7]['state'],
+			'post_date' => $episodes[7]['pubdate'],
+			'post_excerpt' => $episodes[7]['desc'],
+			'post_name' => $episodes[7]['alias'],
+			'post_title' => utf8_encode($episodes[7]['h1']),
+			'post_content' => $episodes[7]['text'],
+			'post_type' => 'p5-podcast-post',
+			'tags_input' => explode(",", $episodes[7]['tags']),
+			'comment_status' => 'closed',
+			'ping_status' => 'closed',
+		);
+		// Insert the post into the database
+		$post_id = wp_insert_post( $post );
+
+		add_post_meta($post_id, 'order', $episodes[7]['order'], true) || update_post_meta( $post_id, 'order', $episodes[7]['order'] );
+		add_post_meta($post_id, 'subtitle', $episodes[7]['h2'], true) || update_post_meta( $post_id, 'subtitle', $episodes[7]['h2'] );
+		add_post_meta($post_id, 'mp3', $episodes[7]['mp3'], true) || update_post_meta( $post_id, 'mp3', $episodes[7]['mp3'] );
+		add_post_meta($post_id, 'duration', $episodes[7]['duration'], true) || update_post_meta( $post_id, 'duration', $episodes[7]['duration'] );
+
+	// post 12
+	$post = array(
+			'post_author' => '1',
+			'post_status' => $episodes[12]['state'],
+			'post_date' => $episodes[12]['pubdate'],
+			'post_excerpt' => $episodes[12]['desc'],
+			'post_name' => $episodes[12]['alias'],
+			'post_title' => utf8_encode($episodes[12]['h1']),
+			'post_content' => $episodes[12]['text'],
+			'post_type' => 'p5-podcast-post',
+			'tags_input' => explode(",", $episodes[12]['tags']),
+			'comment_status' => 'closed',
+			'ping_status' => 'closed',
+		);
+		// Insert the post into the database
+		$post_id = wp_insert_post( $post );
+
+		add_post_meta($post_id, 'order', $episodes[12]['order'], true) || update_post_meta( $post_id, 'order', $episodes[12]['order'] );
+		add_post_meta($post_id, 'subtitle', $episodes[12]['h2'], true) || update_post_meta( $post_id, 'subtitle', $episodes[12]['h2'] );
+		add_post_meta($post_id, 'mp3', $episodes[12]['mp3'], true) || update_post_meta( $post_id, 'mp3', $episodes[12]['mp3'] );
+		add_post_meta($post_id, 'duration', $episodes[12]['duration'], true) || update_post_meta( $post_id, 'duration', $episodes[12]['duration'] );
+
+	// post 14
+	$post = array(
+			'post_author' => '1',
+			'post_status' => $episodes[14]['state'],
+			'post_date' => $episodes[14]['pubdate'],
+			'post_excerpt' => $episodes[14]['desc'],
+			'post_name' => $episodes[14]['alias'],
+			'post_title' => utf8_encode($episodes[14]['h1']),
+			'post_content' => $episodes[14]['text'],
+			'post_type' => 'p5-podcast-post',
+			'tags_input' => explode(",", $episodes[14]['tags']),
+			'comment_status' => 'closed',
+			'ping_status' => 'closed',
+		);
+		// Insert the post into the database
+		$post_id = wp_insert_post( $post );
+
+		add_post_meta($post_id, 'order', $episodes[14]['order'], true) || update_post_meta( $post_id, 'order', $episodes[14]['order'] );
+		add_post_meta($post_id, 'subtitle', $episodes[14]['h2'], true) || update_post_meta( $post_id, 'subtitle', $episodes[14]['h2'] );
+		add_post_meta($post_id, 'mp3', $episodes[14]['mp3'], true) || update_post_meta( $post_id, 'mp3', $episodes[14]['mp3'] );
+		add_post_meta($post_id, 'duration', $episodes[14]['duration'], true) || update_post_meta( $post_id, 'duration', $episodes[14]['duration'] );
+
+	// post 21
+	$post = array(
+			'post_author' => '1',
+			'post_status' => $episodes[21]['state'],
+			'post_date' => $episodes[21]['pubdate'],
+			'post_excerpt' => $episodes[21]['desc'],
+			'post_name' => $episodes[21]['alias'],
+			'post_title' => utf8_encode($episodes[21]['h1']),
+			'post_content' => $episodes[21]['text'],
+			'post_type' => 'p5-podcast-post',
+			'tags_input' => explode(",", $episodes[21]['tags']),
+			'comment_status' => 'closed',
+			'ping_status' => 'closed',
+		);
+		// Insert the post into the database
+		$post_id = wp_insert_post( $post );
+
+		add_post_meta($post_id, 'order', $episodes[21]['order'], true) || update_post_meta( $post_id, 'order', $episodes[21]['order'] );
+		add_post_meta($post_id, 'subtitle', $episodes[21]['h2'], true) || update_post_meta( $post_id, 'subtitle', $episodes[21]['h2'] );
+		add_post_meta($post_id, 'mp3', $episodes[21]['mp3'], true) || update_post_meta( $post_id, 'mp3', $episodes[21]['mp3'] );
+		add_post_meta($post_id, 'duration', $episodes[21]['duration'], true) || update_post_meta( $post_id, 'duration', $episodes[21]['duration'] );	
+
 }
 
 add_action('admin_init', create_function('', 'add_meta_box("my_upload_field", "Upload File Data instead", "my_upload_field", "p5-podcast-post");'));
@@ -176,7 +309,5 @@ function handle_upload_field( $post_ID, $post) {
         }
     }
 }
-
-
 // EOF Never write after php closing tag
 ?>
