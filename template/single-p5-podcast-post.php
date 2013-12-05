@@ -11,37 +11,45 @@ Template Name Posts: single-p5-podcast-post
 		<?php while (have_posts()) : the_post(); ?>
 			<div id="post-<?php the_ID(); ?>" class="p5-podcast-post">
 
-				<?php //get_template_part( 'content', get_post_format() ); ?>
-
 				<h1 class="p5-podcast-post-name">Title : <?php the_title(); ?></h1>
-				<p class="p5-podcast-post-description">Excerpt : <?php the_excerpt(); ?></p>
-				<ul>
-					<li>desc : <?php the_excerpt(); ?></li>
-					<li>Image : <?php the_post_thumbnail(); ?></li>
+				<div class="p5-podcast-post-content">Content : <?php the_content(); ?></div>
+				<div>
+					
+					<h2>Description : <?php the_excerpt(); ?></h2>
+					<h3>Image<h3>
+
+
 					<?php 
-						
-						$custom = get_post_custom(the_ID());
+						// The image is in an Attachement Post with ID++
+						echo wp_get_attachment_image( get_the_ID() + 1);
+					?>
+
+
+					<?php 
+						// basic display of custom fields
+						$custom = get_post_custom(get_the_ID());
 						foreach ( $custom as $key => $value ) {
 							if($key === "mp3") {
-    							echo "<li>". $key . " => " . $value[0] . "<li />";
+								echo "<h3>". $key . " song is " . $value[0] . "</h3>";
 							}
-							elseif($key === "duration") {
-    							echo "<li>". $key . " => " . $value[0] . "<li />";
+							elseif($key === "duree") {
+								echo "<h3>". $key . " is : " . $value[0] . " seconds.</h3>";
 							}
 							elseif($key === "subtitle") {
-    							echo "<li>". $key . " => " . $value[0] . "<li />";
+								echo "<h3>". $key . " is : " . $value[0] . "</h3>";
 							}
 							elseif($key === "order") {
-    							echo "<li>". $key . " => " . $value[0] . "<li />";
+								echo "<h3>". $key . " is : " . $value[0] . "</h3>";
 							}
-    					}
+						}
 
-   					?>
-				</ul>
-				<p class="postmetadata">Posted in <?php the_category(', '); ?></p>
-	    	</div>
-	    <?php endwhile; ?>
-  <?php endif; ?>
+					?>
+				
+				</div>
+				<p class="postmetadata">Posted in <?php wp_get_post_categories(get_the_ID()); ?></p>
+			</div>
+		<?php endwhile; ?>
+	<?php endif; ?>
 
 </div>
 <?php get_footer(); ?>
